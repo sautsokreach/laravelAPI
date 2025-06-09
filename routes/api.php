@@ -19,3 +19,23 @@ use App\Http\Controllers\Api\UserController;
 //     return $request->user();
 // });
 Route::get('/users', [UserController::class, 'index']); // Good
+
+// Route::post('/login', function (Request $request) {
+//     $credentials = $request->validate([
+//         'email' => 'required|email',
+//         'password' => 'required',
+//     ]);
+
+//     if (!Auth::attempt($credentials)) {
+//         return response()->json(['message' => 'Invalid credentials'], 401);
+//     }
+
+//     $request->session()->regenerate();
+
+//     return response()->json(['message' => 'Logged in']);
+// });
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
