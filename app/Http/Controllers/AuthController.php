@@ -8,15 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-      public function index()
-    {
-        return response()->json([
-            'users' => ['Alice', 'Bob']
-        ]);
-    }
     public function login(Request $request)
     {
-        error_log("This is a log message in AuthController");
+        
         
         $credentials = $request->only('email', 'password');
 
@@ -41,6 +35,7 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
+        error_log("This is a log message in AuthController1234");
         return response()->json($request->user());
     }
 }
