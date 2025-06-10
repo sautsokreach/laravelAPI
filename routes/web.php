@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\UserController;
 use Illuminate\Http\Request;  // <--- Make sure to import this
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +14,13 @@ use Illuminate\Http\Request;  // <--- Make sure to import this
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+
 Route::post('/register', [AuthController::class, 'register']);//yes
 Route::post('/forgot-password', [AuthController::class, 'forgot']);
 Route::post('/reset-password', [AuthController::class, 'reset']);
@@ -28,14 +28,20 @@ Route::post('/reset-password', [AuthController::class, 'reset']);
 Route::middleware('auth:sanctum')->post('/user/profile-image', [UserController::class, 'uploadProfileImage']);
 Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'updateProfile']);
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
-
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::put('/debug-cookies', function (Request $request) {
-    \Log::info('Debug cookies:', $request->cookies->all());
     return response()->json([
-        'cookies' => $request->cookies->all(),
+        'cookies' => $request->headers->all()
     ]);
 });
 
 Route::get('/example', function () {
     return view('example');  // Laravel will look for resources/views/example.blade.php
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

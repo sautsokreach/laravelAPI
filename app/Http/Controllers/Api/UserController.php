@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -42,10 +42,13 @@ class UserController extends Controller
         $request->validate([
             'image' => 'required|image|max:2048', // max 2MB
         ]);
-
+      
         $user = $request->user();
+            // Delete old image if exists
+        if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
+            Storage::disk('public')->delete($user->profile_image);
+        }
         $path = $request->file('image')->store('profile_images', 'public');
-
         $user->profile_image = $path;
         $user->save();
 
