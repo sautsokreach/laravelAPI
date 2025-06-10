@@ -19,11 +19,12 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);//yes
 Route::post('/forgot-password', [AuthController::class, 'forgot']);
-Route::post('/reset-password', [AuthController::class, 'reset']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/user/profile-image', [UserController::class, 'uploadProfileImage']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/reset-password', [AuthController::class, 'reset']);
 });
