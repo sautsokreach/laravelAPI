@@ -16,12 +16,12 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return apiResponse(null,'Invalid credentials', 401);
         }
 
-        $request->session()->regenerate();
+        $user = Auth::user(); // ✅ This retrieves the authenticated user
 
-        return response()->json(['message' => 'Login successful']);
+        return apiResponse($user, 'User logged in successfully');
     }
 
     public function logout(Request $request)
@@ -31,33 +31,30 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logout successful']);
+        return apiResponse(null, 'User logout successfully');
     }
 
     public function user(Request $request)
     {
-        error_log("This is a log message in AuthController1234");
+        
         return response()->json($request->user());
     }
     public function register(Request $request)
     {
-        
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed' // must send password + password_confirmation
+            'password' => 'required|string|min:8' // must send password
         ]);
-        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-        error_log("This is a log message in AuthController1234");
 
-        Auth::login($user); // optional: login after register
+        // Auth::login($user); // optional: login after register
 
-        return response()->json(['message' => 'User registered successfully']);
+        return apiResponse($user, 'User registered successfully');
     }
 
     public function forgot(Request $request)

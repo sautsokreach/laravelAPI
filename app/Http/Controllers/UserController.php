@@ -30,11 +30,12 @@ class UserController extends Controller
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'phonenumber' => 'sometimes|string|max:20' // or use phone validation package for stricter rules
         ]);
 
-        $user->update($request->only(['name', 'email']));
+        $user->update($request->only(['name', 'email', 'phonenumber']));
 
-        return response()->json(['message' => 'Profile updated', 'user' => $user]);
+        return apiResponse($user, 'Profile updated');
     }
     public function uploadProfileImage(Request $request)
     {

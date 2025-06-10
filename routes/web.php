@@ -21,9 +21,12 @@ Route::get('/', function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);//yes
 Route::post('/forgot-password', [AuthController::class, 'forgot']);
 Route::post('/reset-password', [AuthController::class, 'reset']);
-Route::middleware('auth:sanctum')->post('/user/profile-image', [UserController::class, 'uploadProfileImage']);
-Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'updateProfile']);
-Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/user/profile-image', [UserController::class, 'uploadProfileImage']);
+    Route::put('/user/profile', [UserController::class, 'updateProfile']);
+    Route::get('/user', [AuthController::class, 'user']);
+});
